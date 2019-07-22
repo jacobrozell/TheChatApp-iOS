@@ -14,10 +14,11 @@ class RegisterController: UIViewController {
     let logoContainer = UIView()
     let logoLabel = UILabel()
     let logoImage = UIImageView()
-    let loginContainer = UIView()
+    let registerContainer = UIView()
     let registerLabel = UILabel()
     let usernameField = UITextField()
     let passwordField = UITextField()
+    let confirmPassword = UITextField()
     let registerButton = UIButton()
     let forgotPassword = UIButton()
     let alreadyUser = UILabel()
@@ -32,7 +33,7 @@ class RegisterController: UIViewController {
     }
     
     func setup() {
-        // Logo Setup
+        // Logo Label
         logoLabel.text = "THE CHAT APP"
         logoLabel.textAlignment = .center
         logoLabel.contentMode = .scaleToFill
@@ -41,14 +42,11 @@ class RegisterController: UIViewController {
         logoImage.image = UIImage(named: "bubble")
         logoImage.contentMode = .scaleAspectFill
         
-        // Login Container
-        //loginContainer.backgroundColor = .red
-        
-        // Login Label
+        // Register Label
         registerLabel.text = "Register:"
         registerLabel.textAlignment = .left
         
-        // Username field
+        // Username Field
         usernameField.placeholder = "Username: "
         usernameField.keyboardType = .asciiCapable
         usernameField.backgroundColor = .white
@@ -63,7 +61,15 @@ class RegisterController: UIViewController {
         passwordField.layer.masksToBounds = true
         passwordField.borderStyle = .roundedRect
         
-        // Login Button
+        // Confirm Passworld Field
+        confirmPassword.placeholder = "Confirm Password: "
+        confirmPassword.keyboardType = .asciiCapable
+        confirmPassword.isSecureTextEntry = true
+        confirmPassword.backgroundColor = .white
+        confirmPassword.layer.masksToBounds = true
+        confirmPassword.borderStyle = .roundedRect
+        
+        // Register Button
         registerButton.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
         registerButton.setTitle("Register", for: .normal)
         registerButton.setTitleColor(.darkGray, for: .normal)
@@ -74,24 +80,23 @@ class RegisterController: UIViewController {
         registerButton.layer.borderColor = UIColor.gray.cgColor
         registerButton.layer.cornerRadius = 8.0
         
-        // ForgotPassword Button
+        // Forgot Password Button
         forgotPassword.addTarget(self, action: #selector(forgotPasswordPressed), for: .touchUpInside)
         forgotPassword.setTitle("Forgot password?", for: .normal)
         forgotPassword.setTitleColor(.darkGray, for: .normal)
         forgotPassword.layer.cornerRadius = 8.0
         forgotPassword.layer.masksToBounds = true
         forgotPassword.backgroundColor = .white
-        
+
         forgotPassword.layer.borderWidth = 1.0
         forgotPassword.layer.borderColor = UIColor.gray.cgColor
         forgotPassword.layer.cornerRadius = 8.0
         
-        // alreadyUser Label
+        // Already User Label
         alreadyUser.text = "Already a user?"
         
-        // Register Button
+        // Login Button
         goToLoginButton.setTitle("Login", for: .normal)
-        
         goToLoginButton.addTarget(self, action: #selector(goToLoginPressed), for: .touchUpInside)
         goToLoginButton.setTitleColor(.darkGray, for: .normal)
         goToLoginButton.layer.cornerRadius = 8.0
@@ -107,18 +112,18 @@ class RegisterController: UIViewController {
         logoContainer.addSubview(logoLabel)
         logoContainer.addSubview(logoImage)
         
-        view.addSubview(loginContainer)
-        loginContainer.addSubview(registerLabel)
-        loginContainer.addSubview(usernameField)
-        loginContainer.addSubview(passwordField)
-        loginContainer.addSubview(registerButton)
-        loginContainer.addSubview(forgotPassword)
+        view.addSubview(registerContainer)
+        registerContainer.addSubview(registerLabel)
+        registerContainer.addSubview(usernameField)
+        registerContainer.addSubview(passwordField)
+        registerContainer.addSubview(confirmPassword)
+        registerContainer.addSubview(registerButton)
+        registerContainer.addSubview(forgotPassword)
         
         view.addSubview(alreadyUser)
         view.addSubview(goToLoginButton)
         
-        
-        // LogoContainer
+        // Logo Container
         logoContainer.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(100)
             make.left.right.equalToSuperview()
@@ -140,13 +145,15 @@ class RegisterController: UIViewController {
             make.left.equalTo(logoLabel.snp.right)
         }
         
-        loginContainer.snp.makeConstraints { (make) in
+        // Regsiter Container
+        registerContainer.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(50)
             make.top.equalTo(logoContainer.snp.bottom).offset(20)
             make.right.equalToSuperview().offset(-50)
             make.bottom.equalToSuperview().offset(-100)
         }
         
+        // Regsiter Label
         registerLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.right.equalToSuperview()
@@ -154,6 +161,7 @@ class RegisterController: UIViewController {
             make.height.equalTo(30)
         }
         
+        // Username Field
         usernameField.snp.makeConstraints { (make) in
             make.top.equalTo(registerLabel.snp.bottom).offset(4)
             make.left.right.equalToSuperview()
@@ -161,6 +169,7 @@ class RegisterController: UIViewController {
             make.height.equalTo(30)
         }
         
+        // Passworld Field
         passwordField.snp.makeConstraints { (make) in
             make.top.equalTo(usernameField.snp.bottom).offset(4)
             make.left.right.equalToSuperview()
@@ -168,13 +177,23 @@ class RegisterController: UIViewController {
             make.height.equalTo(30)
         }
         
+        // Passworld Field
+        confirmPassword.snp.makeConstraints { (make) in
+            make.top.equalTo(passwordField.snp.bottom).offset(4)
+            make.left.right.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.height.equalTo(30)
+        }
+        
+        // Regsiter Button
         registerButton.snp.makeConstraints { (make) in
-            make.top.equalTo(passwordField.snp.bottom).offset(16)
+            make.top.equalTo(confirmPassword.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
             make.width.equalTo(80)
             make.height.equalTo(30)
         }
         
+        // Forgot Password
         forgotPassword.snp.makeConstraints { (make) in
             make.top.equalTo(registerButton.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
@@ -182,6 +201,7 @@ class RegisterController: UIViewController {
             make.height.equalTo(30)
         }
         
+        // Already User Button
         alreadyUser.snp.makeConstraints { (make) in
             make.bottom.equalTo(goToLoginButton.snp.top)
             make.left.equalTo(goToLoginButton.snp.left)
@@ -189,13 +209,13 @@ class RegisterController: UIViewController {
             make.width.equalTo(130)
         }
         
+        // GoToLogin Button
         goToLoginButton.snp.makeConstraints { (make) in
             make.bottom.right.equalToSuperview().offset(-100)
             make.bottom.left.equalToSuperview().offset(100)
             make.height.equalTo(30)
             make.centerX.equalToSuperview()
         }
-        
     }
     
     @objc func loginPressed() {
