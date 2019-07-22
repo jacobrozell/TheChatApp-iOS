@@ -9,10 +9,11 @@
 import UIKit
 import SnapKit
 import SVProgressHUD
+import Firebase
 
-class LoginController: UIViewController {
+
+class LoginController: UIViewController, UITextFieldDelegate {
     let logoContainer = UIView()
-    let logoLabel = UILabel()
     let logoImage = UIImageView()
     let loginContainer = UIView()
     let loginLabel = UILabel()
@@ -28,19 +29,14 @@ class LoginController: UIViewController {
         self.navigationItem.hidesBackButton = true
         setup()
         setupConstraints()
-        
     }
     
     
     func setup() {
-        // Logo Setup
-        logoLabel.text = "THE CHAT APP"
-        logoLabel.textAlignment = .center
-        logoLabel.contentMode = .scaleToFill
         
         // Logo Image
-        logoImage.image = UIImage(named: "bubble")
-        logoImage.contentMode = .scaleAspectFill
+        logoImage.image = #imageLiteral(resourceName: "textlogo")
+        logoImage.contentMode = .center
         
         // Login Container
         //loginContainer.backgroundColor = .red
@@ -56,6 +52,7 @@ class LoginController: UIViewController {
         //usernameField.layer.cornerRadius = 8.0
         usernameField.layer.masksToBounds = true
         usernameField.borderStyle = .roundedRect
+        usernameField.delegate = self
         
         // Password field
         passwordField.placeholder = "Password: "
@@ -65,6 +62,7 @@ class LoginController: UIViewController {
         //passwordField.layer.cornerRadius = 8.0
         passwordField.layer.masksToBounds = true
         passwordField.borderStyle = .roundedRect
+        passwordField.delegate = self
         
         // Login Button
         loginButton.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
@@ -106,7 +104,6 @@ class LoginController: UIViewController {
     
     func setupConstraints() {
         view.addSubview(logoContainer)
-        logoContainer.addSubview(logoLabel)
         logoContainer.addSubview(logoImage)
         
         view.addSubview(loginContainer)
@@ -127,19 +124,11 @@ class LoginController: UIViewController {
             make.height.equalTo(200)
         }
         
-        // Logo Label Constraints
-        logoLabel.snp.makeConstraints { (make) in
-            make.top.left.bottom.equalToSuperview()
-            make.right.equalTo(logoImage.snp.left)
-            make.width.equalToSuperview().dividedBy(3)
-        }
-        
         // Logo Image Constraints
         logoImage.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.left.equalTo(logoLabel.snp.right)
+            make.right.left.equalToSuperview()
+            make.bottom.equalTo(loginContainer.snp.top)
         }
         
         loginContainer.snp.makeConstraints { (make) in
@@ -199,9 +188,42 @@ class LoginController: UIViewController {
         
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true);
+    }
+    
     @objc func loginPressed() {
         print("loginPressed")
-        self.navigationController?.pushViewController(AppController(), animated: true)
+        guard let email = usernameField.text, let password = passwordField.text else { return }
+        
+        SVProgressHUD.show()
+        
+        //TODO: Log in the user
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
+            // Error Occurred - Show Error
+            if error != nil {
+                print(error!)
+                let alert = UIAlertController(title: "Log-In Failed!", message: "Email or Password is incorrect!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
+                self.present(alert, animated: true)
+            }
+            // Success!
+            else {
+                let alert = UIAlertController(title: "Log-In Successful!", message: "Welcome to The Chat App!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: { (void) in
+                    self.navigationController?.pushViewController(AppController(), animated: true)
+                }))
+                SVProgressHUD.dismiss()
+               // self.present(alert, animated: true)
+            }
+        }
+        SVProgressHUD.dismiss()
     }
     
     @objc func forgotPasswordPressed() {
@@ -209,7 +231,7 @@ class LoginController: UIViewController {
     }
     
     @objc func registerPressed() {
-        //navigationController?.pushViewController(RegisterController(), animated: true)
+        self.navigationItem.hidesBackButton = true
         self.navigationController?.pushViewController(RegisterController(), animated: true)
     }
 }

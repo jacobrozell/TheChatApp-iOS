@@ -16,7 +16,7 @@ class AppController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
         
-        self.navigationItem.hidesBackButton = true
+        self.navigationItem.hidesBackButton = false
         self.title = "Messages"
         tableView.backgroundColor = .orange
         

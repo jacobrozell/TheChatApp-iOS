@@ -84,10 +84,7 @@ class MessageCell: UITableViewCell {
 }
 
 class MessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
-    let messages: [ChatMessage] = [
-        ChatMessage(id: "1", message: "HELLO", fromID: "1", toID: "2", timeStamp: "123"),
-        ChatMessage(id: "2", message: "HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2HELLO2", fromID: "1", toID: "2", timeStamp: "123")
-    ]
+    let messages: [ChatMessage] = [ChatMessage]()
     
     init(style: UITableView.Style) {
         super.init(frame: .zero, style: .plain)

@@ -9,10 +9,11 @@
 import UIKit
 import SnapKit
 import SVProgressHUD
+import Firebase
 
-class RegisterController: UIViewController {
+
+class RegisterController: UIViewController, UITextFieldDelegate {
     let logoContainer = UIView()
-    let logoLabel = UILabel()
     let logoImage = UIImageView()
     let registerContainer = UIView()
     let registerLabel = UILabel()
@@ -29,18 +30,13 @@ class RegisterController: UIViewController {
         self.navigationItem.hidesBackButton = true
         setup()
         setupConstraints()
-        
     }
     
     func setup() {
-        // Logo Label
-        logoLabel.text = "THE CHAT APP"
-        logoLabel.textAlignment = .center
-        logoLabel.contentMode = .scaleToFill
         
         // Logo Image
-        logoImage.image = UIImage(named: "bubble")
-        logoImage.contentMode = .scaleAspectFill
+        logoImage.image = #imageLiteral(resourceName: "textlogo")
+        logoImage.contentMode = .center
         
         // Register Label
         registerLabel.text = "Register:"
@@ -52,14 +48,16 @@ class RegisterController: UIViewController {
         usernameField.backgroundColor = .white
         usernameField.layer.masksToBounds = true
         usernameField.borderStyle = .roundedRect
+        usernameField.delegate = self
         
-        // Password field
+        // Password Field
         passwordField.placeholder = "Password: "
         passwordField.keyboardType = .asciiCapable
         passwordField.isSecureTextEntry = true
         passwordField.backgroundColor = .white
         passwordField.layer.masksToBounds = true
         passwordField.borderStyle = .roundedRect
+        passwordField.delegate = self
         
         // Confirm Passworld Field
         confirmPassword.placeholder = "Confirm Password: "
@@ -68,9 +66,10 @@ class RegisterController: UIViewController {
         confirmPassword.backgroundColor = .white
         confirmPassword.layer.masksToBounds = true
         confirmPassword.borderStyle = .roundedRect
+        passwordField.delegate = self
         
         // Register Button
-        registerButton.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(registerPressed), for: .touchUpInside)
         registerButton.setTitle("Register", for: .normal)
         registerButton.setTitleColor(.darkGray, for: .normal)
         registerButton.layer.cornerRadius = 8.0
@@ -109,7 +108,6 @@ class RegisterController: UIViewController {
     
     func setupConstraints() {
         view.addSubview(logoContainer)
-        logoContainer.addSubview(logoLabel)
         logoContainer.addSubview(logoImage)
         
         view.addSubview(registerContainer)
@@ -130,19 +128,11 @@ class RegisterController: UIViewController {
             make.height.equalTo(200)
         }
         
-        // Logo Label Constraints
-        logoLabel.snp.makeConstraints { (make) in
-            make.top.left.bottom.equalToSuperview()
-            make.right.equalTo(logoImage.snp.left)
-            make.width.equalToSuperview().dividedBy(3)
-        }
-        
         // Logo Image Constraints
         logoImage.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.left.equalTo(logoLabel.snp.right)
+            make.right.left.equalToSuperview()
+            make.bottom.equalTo(registerContainer.snp.top)
         }
         
         // Regsiter Container
@@ -218,11 +208,49 @@ class RegisterController: UIViewController {
         }
     }
     
-    @objc func loginPressed() {
-        print("loginPressed")
-        self.dismiss(animated: true) {
-            self.navigationController?.pushViewController(AppController(), animated: true)
-            self.navigationItem.hidesBackButton = false
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true);
+    }
+    
+    @objc func registerPressed() {
+        print("registerPressed")
+        guard let email = usernameField.text, let password = passwordField.text else { return }
+        if passwordField.text == confirmPassword.text {
+            SVProgressHUD.show()
+            
+            Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+                
+                // Error Occurred - Show Error
+                if error != nil {
+                    print(error!)
+                    let alert = UIAlertController(title: "Registration Failed!", message: "Please make sure:\n•Email is in correct format\n•Password is at least 6 characters long\n•Passwords Match", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
+                    self.present(alert, animated: true)
+                }
+                
+                // Success - Regsiter and log user in
+                else {
+                    let alert = UIAlertController(title: "Registration Successful!", message: "Welcome to The Chat App!", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: { (void) in
+                        self.navigationController?.pushViewController(AppController(), animated: true)
+                    }))
+                    SVProgressHUD.dismiss()
+                    self.present(alert, animated: true)
+                }
+            }
+            SVProgressHUD.dismiss()
+        } else {
+            let alert = UIAlertController(title: "Registration Failed!", message: "Please make sure:\n•Email is in correct format\n•Password is at least 6 characters long\n•Passwords Match", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: { (void) in
+                self.passwordField.text = ""
+                self.confirmPassword.text = ""
+            }))
+            self.present(alert, animated: true)
         }
     }
     
@@ -231,7 +259,7 @@ class RegisterController: UIViewController {
     }
     
     @objc func goToLoginPressed() {
+        self.navigationItem.hidesBackButton = true
         self.navigationController?.pushViewController(LoginController(), animated: true)
-        self.navigationItem.hidesBackButton = false
     }
 }
