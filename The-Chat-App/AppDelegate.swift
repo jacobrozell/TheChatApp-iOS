@@ -21,10 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let nav = UINavigationController()
-        let mainViewController = AppController()
-        nav.viewControllers = [mainViewController]
-        nav.navigationBar.barTintColor = .gray
-        nav.navigationBar.tintColor = .white
+        nav.viewControllers = [LoginController(), AppController()]
+//        nav.navigationBar.barTintColor = .gray
+//        nav.navigationBar.tintColor = .white
         
         window!.rootViewController = nav
         window!.makeKeyAndVisible()

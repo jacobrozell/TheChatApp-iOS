@@ -5,7 +5,10 @@
 //  Created by Jacob Rozell on 7/16/19.
 //  Copyright © 2019 Jacob Rozell. All rights reserved.
 //
+<<<<<<< HEAD
+=======
 
+>>>>>>> e049c2e04c706a71f40a70389b173c36918ecb30
 import UIKit
 import SnapKit
 
