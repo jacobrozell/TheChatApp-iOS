@@ -119,7 +119,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         // LogoContainer
         logoContainer.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().offset(60)
             make.left.right.equalToSuperview()
             make.height.equalTo(200)
         }
@@ -180,8 +180,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
         
         registerButton.snp.makeConstraints { (make) in
-            make.bottom.right.equalToSuperview().offset(-100)
-            make.bottom.left.equalToSuperview().offset(100)
+            make.right.equalToSuperview().offset(-100)
+            make.bottom.equalToSuperview().offset(-50)
+            make.left.equalToSuperview().offset(100)
             make.height.equalTo(30)
             make.centerX.equalToSuperview()
         }
@@ -220,7 +221,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     self.navigationController?.pushViewController(AppController(), animated: true)
                 }))
                 SVProgressHUD.dismiss()
-               // self.present(alert, animated: true)
+                self.present(alert, animated: true)
             }
         }
         SVProgressHUD.dismiss()

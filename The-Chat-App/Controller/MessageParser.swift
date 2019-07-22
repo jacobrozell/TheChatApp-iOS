@@ -8,19 +8,22 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 class MesssageParser {
     func retrieveMessages() -> [ChatMessage] {
-        let messages: [ChatMessage] = [ChatMessage]()
+        var messages: [ChatMessage] = [ChatMessage]()
         let messageDB = Database.database().reference().child("latest-messages")
 
         messageDB.observe(.childAdded) { (snapshot) in
             let snapshotValue = snapshot.value as! Dictionary<String,String>
-            let text = snapshotValue["MessageBody"]!
-            let sender = snapshotValue["Sender"]!
-
-            print(text, sender)
-            messages.append(Message(sender: sender, messageBody: text))
+            let text = snapshotValue["text"]!
+            let id = snapshotValue["id"]!
+            let timestamp = snapshotValue["timestamp"]!
+            let toID = snapshotValue["toID"]!
+            let fromID = snapshotValue["fromID"]!
+            messages.append(ChatMessage(id: id, message: text, fromID: fromID, toID: toID, timeStamp: timestamp))
         }
+        return messages
     }
 }

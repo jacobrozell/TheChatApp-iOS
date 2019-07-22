@@ -25,6 +25,10 @@ PODS:
   - FirebaseCore (6.1.0):
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/Logger (~> 6.0)
+  - FirebaseDatabase (6.0.0):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - leveldb-library (~> 1.18)
   - FirebaseInstanceID (4.2.2):
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
@@ -54,6 +58,7 @@ PODS:
   - GoogleUtilities/UserDefaults (6.2.3):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.2)
+  - leveldb-library (1.20)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
@@ -65,6 +70,7 @@ PODS:
 DEPENDENCIES:
   - Firebase
   - FirebaseAuth
+  - FirebaseDatabase
   - SnapKit
   - SVProgressHUD
 
@@ -75,10 +81,12 @@ SPEC REPOS:
     - FirebaseAuth
     - FirebaseAuthInterop
     - FirebaseCore
+    - FirebaseDatabase
     - FirebaseInstanceID
     - GoogleAppMeasurement
     - GoogleUtilities
     - GTMSessionFetcher
+    - leveldb-library
     - nanopb
     - SnapKit
     - SVProgressHUD
@@ -89,14 +97,16 @@ SPEC CHECKSUMS:
   FirebaseAuth: a06ad63e9bf4c86165b54cceb1c14d4f4c38d419
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
   FirebaseCore: aecf02fb2274ec361b9bebeac112f5daa18273bd
+  FirebaseDatabase: f48e067716864be2b855cf716b927ef375d6cfa0
   FirebaseInstanceID: 662b8108a09fe9ed01aafdedba100fde8536b0f6
   GoogleAppMeasurement: 183bd916af7f80deb67c01888368f1108d641832
   GoogleUtilities: d2b0e277a95962e09bb27f5cd42f5f0b6a506c7d
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
+  leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 50ed747cfbc100321cbfaa2600d02e90ee70b791
+PODFILE CHECKSUM: a743a28a1ca4c4aea66ec782e641377d7dacb8f5
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.7.0

@@ -10,5 +10,6 @@ target 'The-Chat-App' do
 	pod 'SVProgressHUD'
 	pod 'Firebase'
     pod 'FirebaseAuth'
+    pod 'FirebaseDatabase'
 
 end

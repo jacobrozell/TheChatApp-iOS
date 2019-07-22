@@ -84,7 +84,7 @@ class MessageCell: UITableViewCell {
 }
 
 class MessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
-    let messages: [ChatMessage] = [ChatMessage]()
+    var messages: [ChatMessage] = [ChatMessage]()
     
     init(style: UITableView.Style) {
         super.init(frame: .zero, style: .plain)
@@ -92,6 +92,7 @@ class MessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource
         self.delegate = self
         self.dataSource = self
         
+        self.messages = MesssageParser().retrieveMessages()
         // Find messages for user / might be better to do this in a controller to conform to low cohesion
     }
     

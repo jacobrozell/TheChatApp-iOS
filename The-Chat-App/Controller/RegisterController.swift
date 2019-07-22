@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 import Firebase
+import FirebaseDatabase
 
 
 class RegisterController: UIViewController, UITextFieldDelegate {
@@ -18,6 +19,7 @@ class RegisterController: UIViewController, UITextFieldDelegate {
     let registerContainer = UIView()
     let registerLabel = UILabel()
     let usernameField = UITextField()
+    let emailField = UITextField()
     let passwordField = UITextField()
     let confirmPassword = UITextField()
     let registerButton = UIButton()
@@ -49,6 +51,14 @@ class RegisterController: UIViewController, UITextFieldDelegate {
         usernameField.layer.masksToBounds = true
         usernameField.borderStyle = .roundedRect
         usernameField.delegate = self
+        
+        // Email Field
+        emailField.placeholder = "Email: "
+        emailField.keyboardType = .asciiCapable
+        emailField.backgroundColor = .white
+        emailField.layer.masksToBounds = true
+        emailField.borderStyle = .roundedRect
+        emailField.delegate = self
         
         // Password Field
         passwordField.placeholder = "Password: "
@@ -113,6 +123,7 @@ class RegisterController: UIViewController, UITextFieldDelegate {
         view.addSubview(registerContainer)
         registerContainer.addSubview(registerLabel)
         registerContainer.addSubview(usernameField)
+        registerContainer.addSubview(emailField)
         registerContainer.addSubview(passwordField)
         registerContainer.addSubview(confirmPassword)
         registerContainer.addSubview(registerButton)
@@ -121,9 +132,9 @@ class RegisterController: UIViewController, UITextFieldDelegate {
         view.addSubview(alreadyUser)
         view.addSubview(goToLoginButton)
         
-        // Logo Container
+        // LogoContainer
         logoContainer.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().offset(60)
             make.left.right.equalToSuperview()
             make.height.equalTo(200)
         }
@@ -159,9 +170,17 @@ class RegisterController: UIViewController, UITextFieldDelegate {
             make.height.equalTo(30)
         }
         
+        // Email Field
+        emailField.snp.makeConstraints { (make) in
+            make.top.equalTo(usernameField.snp.bottom).offset(4)
+            make.left.right.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.height.equalTo(30)
+        }
+        
         // Passworld Field
         passwordField.snp.makeConstraints { (make) in
-            make.top.equalTo(usernameField.snp.bottom).offset(4)
+            make.top.equalTo(emailField.snp.bottom).offset(4)
             make.left.right.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(30)
@@ -201,8 +220,9 @@ class RegisterController: UIViewController, UITextFieldDelegate {
         
         // GoToLogin Button
         goToLoginButton.snp.makeConstraints { (make) in
-            make.bottom.right.equalToSuperview().offset(-100)
-            make.bottom.left.equalToSuperview().offset(100)
+            make.right.equalToSuperview().offset(-100)
+            make.bottom.equalToSuperview().offset(-50)
+            make.left.equalToSuperview().offset(100)
             make.height.equalTo(30)
             make.centerX.equalToSuperview()
         }
@@ -237,6 +257,8 @@ class RegisterController: UIViewController, UITextFieldDelegate {
                 else {
                     let alert = UIAlertController(title: "Registration Successful!", message: "Welcome to The Chat App!", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: { (void) in
+                        let userDB = Database.database().reference().child("users")
+                        //userDB.
                         self.navigationController?.pushViewController(AppController(), animated: true)
                     }))
                     SVProgressHUD.dismiss()
