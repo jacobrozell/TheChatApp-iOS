@@ -1,8 +1,8 @@
 //
-//  LoginController.swift
+//  RegisterViewController.swift
 //  The-Chat-App
 //
-//  Created by Jacob Rozell on 7/21/19.
+//  Created by Jacob Rozell on 7/22/19.
 //  Copyright © 2019 Jacob Rozell. All rights reserved.
 //
 
@@ -10,18 +10,18 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 
-class LoginController: UIViewController {
+class RegisterController: UIViewController {
     let logoContainer = UIView()
     let logoLabel = UILabel()
     let logoImage = UIImageView()
     let loginContainer = UIView()
-    let loginLabel = UILabel()
+    let registerLabel = UILabel()
     let usernameField = UITextField()
     let passwordField = UITextField()
-    let loginButton = UIButton()
-    let forgotPassword = UIButton()
-    let notUserLabel = UILabel()
     let registerButton = UIButton()
+    let forgotPassword = UIButton()
+    let alreadyUser = UILabel()
+    let goToLoginButton = UIButton()
     
     override func viewDidLoad() {
         view.backgroundColor = Util().hexStringToUIColor(hex: "#6d84a8")
@@ -30,7 +30,6 @@ class LoginController: UIViewController {
         setupConstraints()
         
     }
-    
     
     func setup() {
         // Logo Setup
@@ -46,14 +45,13 @@ class LoginController: UIViewController {
         //loginContainer.backgroundColor = .red
         
         // Login Label
-        loginLabel.text = "Login:"
-        loginLabel.textAlignment = .left
+        registerLabel.text = "Register:"
+        registerLabel.textAlignment = .left
         
         // Username field
         usernameField.placeholder = "Username: "
         usernameField.keyboardType = .asciiCapable
         usernameField.backgroundColor = .white
-        //usernameField.layer.cornerRadius = 8.0
         usernameField.layer.masksToBounds = true
         usernameField.borderStyle = .roundedRect
         
@@ -62,20 +60,19 @@ class LoginController: UIViewController {
         passwordField.keyboardType = .asciiCapable
         passwordField.isSecureTextEntry = true
         passwordField.backgroundColor = .white
-        //passwordField.layer.cornerRadius = 8.0
         passwordField.layer.masksToBounds = true
         passwordField.borderStyle = .roundedRect
         
         // Login Button
-        loginButton.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
-        loginButton.setTitle("Login", for: .normal)
-        loginButton.setTitleColor(.darkGray, for: .normal)
-        loginButton.layer.cornerRadius = 8.0
-        loginButton.layer.masksToBounds = true
-        loginButton.backgroundColor = .white
-        loginButton.layer.borderWidth = 1.0
-        loginButton.layer.borderColor = UIColor.gray.cgColor
-        loginButton.layer.cornerRadius = 8.0
+        registerButton.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
+        registerButton.setTitle("Register", for: .normal)
+        registerButton.setTitleColor(.darkGray, for: .normal)
+        registerButton.layer.cornerRadius = 8.0
+        registerButton.layer.masksToBounds = true
+        registerButton.backgroundColor = .white
+        registerButton.layer.borderWidth = 1.0
+        registerButton.layer.borderColor = UIColor.gray.cgColor
+        registerButton.layer.cornerRadius = 8.0
         
         // ForgotPassword Button
         forgotPassword.addTarget(self, action: #selector(forgotPasswordPressed), for: .touchUpInside)
@@ -89,19 +86,20 @@ class LoginController: UIViewController {
         forgotPassword.layer.borderColor = UIColor.gray.cgColor
         forgotPassword.layer.cornerRadius = 8.0
         
-        // NotaUser Label
-        notUserLabel.text = "Not a user?"
+        // alreadyUser Label
+        alreadyUser.text = "Already a user?"
         
         // Register Button
-        registerButton.setTitle("Register", for: .normal)
-        registerButton.addTarget(self, action: #selector(registerPressed), for: .touchUpInside)
-        registerButton.setTitleColor(.darkGray, for: .normal)
-        registerButton.layer.cornerRadius = 8.0
-        registerButton.layer.masksToBounds = true
-        registerButton.backgroundColor = .white
-        registerButton.layer.borderWidth = 1.0
-        registerButton.layer.borderColor = UIColor.gray.cgColor
-        registerButton.layer.cornerRadius = 8.0
+        goToLoginButton.setTitle("Login", for: .normal)
+        
+        goToLoginButton.addTarget(self, action: #selector(goToLoginPressed), for: .touchUpInside)
+        goToLoginButton.setTitleColor(.darkGray, for: .normal)
+        goToLoginButton.layer.cornerRadius = 8.0
+        goToLoginButton.layer.masksToBounds = true
+        goToLoginButton.backgroundColor = .white
+        goToLoginButton.layer.borderWidth = 1.0
+        goToLoginButton.layer.borderColor = UIColor.gray.cgColor
+        goToLoginButton.layer.cornerRadius = 8.0
     }
     
     func setupConstraints() {
@@ -110,14 +108,14 @@ class LoginController: UIViewController {
         logoContainer.addSubview(logoImage)
         
         view.addSubview(loginContainer)
-        loginContainer.addSubview(loginLabel)
+        loginContainer.addSubview(registerLabel)
         loginContainer.addSubview(usernameField)
         loginContainer.addSubview(passwordField)
-        loginContainer.addSubview(loginButton)
+        loginContainer.addSubview(registerButton)
         loginContainer.addSubview(forgotPassword)
         
-        view.addSubview(notUserLabel)
-        view.addSubview(registerButton)
+        view.addSubview(alreadyUser)
+        view.addSubview(goToLoginButton)
         
         
         // LogoContainer
@@ -149,15 +147,15 @@ class LoginController: UIViewController {
             make.bottom.equalToSuperview().offset(-100)
         }
         
-        loginLabel.snp.makeConstraints { (make) in
+        registerLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.right.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.height.equalTo(20)
+            make.height.equalTo(30)
         }
         
         usernameField.snp.makeConstraints { (make) in
-            make.top.equalTo(loginLabel.snp.bottom).offset(4)
+            make.top.equalTo(registerLabel.snp.bottom).offset(4)
             make.left.right.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(30)
@@ -170,27 +168,28 @@ class LoginController: UIViewController {
             make.height.equalTo(30)
         }
         
-        loginButton.snp.makeConstraints { (make) in
+        registerButton.snp.makeConstraints { (make) in
             make.top.equalTo(passwordField.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
-            make.width.equalTo(60)
+            make.width.equalTo(80)
             make.height.equalTo(30)
         }
         
         forgotPassword.snp.makeConstraints { (make) in
-            make.top.equalTo(loginButton.snp.bottom).offset(4)
+            make.top.equalTo(registerButton.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
             make.width.equalTo(165)
+            make.height.equalTo(30)
         }
         
-        notUserLabel.snp.makeConstraints { (make) in
-            make.bottom.equalTo(registerButton.snp.top)
-            make.left.equalTo(registerButton.snp.left)
+        alreadyUser.snp.makeConstraints { (make) in
+            make.bottom.equalTo(goToLoginButton.snp.top)
+            make.left.equalTo(goToLoginButton.snp.left)
             make.height.equalTo(30)
             make.width.equalTo(130)
         }
         
-        registerButton.snp.makeConstraints { (make) in
+        goToLoginButton.snp.makeConstraints { (make) in
             make.bottom.right.equalToSuperview().offset(-100)
             make.bottom.left.equalToSuperview().offset(100)
             make.height.equalTo(30)
@@ -201,16 +200,18 @@ class LoginController: UIViewController {
     
     @objc func loginPressed() {
         print("loginPressed")
-        self.navigationController?.pushViewController(AppController(), animated: true)
+        self.dismiss(animated: true) {
+            self.navigationController?.pushViewController(AppController(), animated: true)
+            self.navigationItem.hidesBackButton = false
+        }
     }
     
     @objc func forgotPasswordPressed() {
         print("forgotPasswordPresed")
     }
     
-    @objc func registerPressed() {
-        //navigationController?.pushViewController(RegisterController(), animated: true)
-        self.navigationController?.pushViewController(RegisterController(), animated: true)
+    @objc func goToLoginPressed() {
+        self.navigationController?.pushViewController(LoginController(), animated: true)
+        self.navigationItem.hidesBackButton = false
     }
 }
-

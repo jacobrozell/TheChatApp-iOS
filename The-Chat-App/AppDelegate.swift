@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let nav = UINavigationController()
-        nav.viewControllers = [LoginController(), AppController()]
+        nav.viewControllers = [RegisterController()]
 //        nav.navigationBar.barTintColor = .gray
 //        nav.navigationBar.tintColor = .white
         

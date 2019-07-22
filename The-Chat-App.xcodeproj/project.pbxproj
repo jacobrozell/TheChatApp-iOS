@@ -16,6 +16,8 @@
 		3676FFCA22E5198900AE483D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3676FFC922E5198900AE483D /* GoogleService-Info.plist */; };
 		3676FFCC22E51CF600AE483D /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3676FFCB22E51CF600AE483D /* AppController.swift */; };
 		3676FFCE22E51E3F00AE483D /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3676FFCD22E51E3F00AE483D /* LoginController.swift */; };
+		3676FFD422E5867F00AE483D /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3676FFD322E5867F00AE483D /* Util.swift */; };
+		3676FFD622E5868400AE483D /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3676FFD522E5868400AE483D /* RegisterController.swift */; };
 		4EED7FB73CE8B736C9182B0B /* Pods_The_Chat_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CC7A9D03B7E6A0BD9A36F90 /* Pods_The_Chat_App.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +34,8 @@
 		3676FFC922E5198900AE483D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3676FFCB22E51CF600AE483D /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		3676FFCD22E51E3F00AE483D /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		3676FFD322E5867F00AE483D /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Util.swift; path = "../../../kk/TheChatApp-iOS/The-Chat-App/SupportingFiles/Util.swift"; sourceTree = "<group>"; };
+		3676FFD522E5868400AE483D /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegisterController.swift; path = "../../../kk/TheChatApp-iOS/The-Chat-App/Controller/RegisterController.swift"; sourceTree = "<group>"; };
 		CDE98C49086025DF14DB58DD /* Pods-The-Chat-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The-Chat-App.debug.xcconfig"; path = "Target Support Files/Pods-The-Chat-App/Pods-The-Chat-App.debug.xcconfig"; sourceTree = "<group>"; };
 		D9905163949E35D2E94014E7 /* Pods-The-Chat-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The-Chat-App.release.xcconfig"; path = "Target Support Files/Pods-The-Chat-App/Pods-The-Chat-App.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,6 +105,7 @@
 				0B36588722DE2B1C0077C147 /* MessagesTableView.swift */,
 				0BBA0DE022DE882800978274 /* ChatViewController.swift */,
 				3676FFCB22E51CF600AE483D /* AppController.swift */,
+				3676FFD522E5868400AE483D /* RegisterController.swift */,
 				3676FFCD22E51E3F00AE483D /* LoginController.swift */,
 			);
 			path = Controller;
@@ -111,6 +116,7 @@
 			children = (
 				3676FFC922E5198900AE483D /* GoogleService-Info.plist */,
 				0B36589122DE2B1D0077C147 /* Info.plist */,
+				3676FFD322E5867F00AE483D /* Util.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -251,6 +257,8 @@
 				3676FFCE22E51E3F00AE483D /* LoginController.swift in Sources */,
 				0B36589822DE2D2C0077C147 /* MessageModel.swift in Sources */,
 				0BBA0DE122DE882800978274 /* ChatViewController.swift in Sources */,
+				3676FFD622E5868400AE483D /* RegisterController.swift in Sources */,
+				3676FFD422E5867F00AE483D /* Util.swift in Sources */,
 				0B36588622DE2B1C0077C147 /* AppDelegate.swift in Sources */,
 				3676FFCC22E51CF600AE483D /* AppController.swift in Sources */,
 			);
