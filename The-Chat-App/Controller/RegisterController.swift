@@ -30,6 +30,7 @@ class RegisterController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         view.backgroundColor = Util().hexStringToUIColor(hex: "#6d84a8")
         self.navigationItem.hidesBackButton = true
+        navigationController?.navigationBar.barStyle = .black
         setup()
         setupConstraints()
     }
@@ -96,7 +97,6 @@ class RegisterController: UIViewController, UITextFieldDelegate {
         forgotPassword.layer.cornerRadius = 8.0
         forgotPassword.layer.masksToBounds = true
         forgotPassword.backgroundColor = .white
-
         forgotPassword.layer.borderWidth = 1.0
         forgotPassword.layer.borderColor = UIColor.gray.cgColor
         forgotPassword.layer.cornerRadius = 8.0
@@ -239,33 +239,10 @@ class RegisterController: UIViewController, UITextFieldDelegate {
     
     @objc func registerPressed() {
         print("registerPressed")
-        guard let email = usernameField.text, let password = passwordField.text else { return }
+        guard let username = usernameField.text, let password = passwordField.text, let email = emailField.text else { return }
         if passwordField.text == confirmPassword.text {
-            SVProgressHUD.show()
+            createUser(email: email, password: password, username: username)
             
-            Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-                
-                // Error Occurred - Show Error
-                if error != nil {
-                    print(error!)
-                    let alert = UIAlertController(title: "Registration Failed!", message: "Please make sure:\n•Email is in correct format\n•Password is at least 6 characters long\n•Passwords Match", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
-                    self.present(alert, animated: true)
-                }
-                
-                // Success - Regsiter and log user in
-                else {
-                    let alert = UIAlertController(title: "Registration Successful!", message: "Welcome to The Chat App!", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: { (void) in
-                        let userDB = Database.database().reference().child("users")
-                        //userDB.
-                        self.navigationController?.pushViewController(AppController(), animated: true)
-                    }))
-                    SVProgressHUD.dismiss()
-                    self.present(alert, animated: true)
-                }
-            }
-            SVProgressHUD.dismiss()
         } else {
             let alert = UIAlertController(title: "Registration Failed!", message: "Please make sure:\n•Email is in correct format\n•Password is at least 6 characters long\n•Passwords Match", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: { (void) in
@@ -283,5 +260,44 @@ class RegisterController: UIViewController, UITextFieldDelegate {
     @objc func goToLoginPressed() {
         self.navigationItem.hidesBackButton = true
         self.navigationController?.pushViewController(LoginController(), animated: true)
+    }
+    
+    func saveUserToDatabase(username: String, email: String) {
+        let userUID = Auth.auth().currentUser!.uid
+        let usersRef = Database.database().reference().child("users").child(userUID)
+        let userData: Dictionary<String, String> = ["uid": userUID, "userEmail": email, "username": username]
+        
+        usersRef.setValue(userData)
+    }
+    
+    func createUser(email: String, password: String, username: String) {
+        SVProgressHUD.show()
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            
+            // Error Occurred - Show Error
+            if error != nil {
+                print(error!)
+                let alert = UIAlertController(title: "Registration Failed!", message: "Please make sure:\n•Email is in correct format\n•Password is at least 6 characters long\n•Passwords Match", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
+                SVProgressHUD.dismiss()
+                self.present(alert, animated: true)
+            }
+                
+            // Success - Regsiter and log user in
+            else {
+                let alert = UIAlertController(title: "Registration Successful!", message: "Welcome to The Chat App!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: { (void) in
+                    let loginController = LoginController()
+                    loginController.logUserIn(email: email, password: password)
+                    
+                    self.saveUserToDatabase(username: username, email: email)
+                    self.navigationController?.pushViewController(AppController(), animated: true)
+                }))
+                SVProgressHUD.dismiss()
+                self.present(alert, animated: true)
+            }
+        }
+        SVProgressHUD.dismiss()
     }
 }

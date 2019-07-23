@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let nav = UINavigationController()
         nav.viewControllers = [RegisterController()]
-//        nav.navigationBar.barTintColor = .gray
-//        nav.navigationBar.tintColor = .white
+        nav.navigationBar.barTintColor = .black
+        nav.navigationBar.tintColor = .white
         
         window!.rootViewController = nav
         window!.makeKeyAndVisible()

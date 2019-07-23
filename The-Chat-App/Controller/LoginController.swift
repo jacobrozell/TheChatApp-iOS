@@ -201,10 +201,22 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @objc func loginPressed() {
         print("loginPressed")
         guard let email = usernameField.text, let password = passwordField.text else { return }
+        self.logUserIn(email: email, password: password)
+    }
+    
+    @objc func forgotPasswordPressed() {
+        print("forgotPasswordPresed")
+    }
+    
+    @objc func registerPressed() {
+        self.navigationItem.hidesBackButton = true
+        self.navigationController?.pushViewController(RegisterController(), animated: true)
+    }
+    
+    func logUserIn(email: String, password: String) {
         
         SVProgressHUD.show()
         
-        //TODO: Log in the user
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             
             // Error Occurred - Show Error
@@ -212,6 +224,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 print(error!)
                 let alert = UIAlertController(title: "Log-In Failed!", message: "Email or Password is incorrect!", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
+                SVProgressHUD.dismiss()
                 self.present(alert, animated: true)
             }
             // Success!
@@ -226,14 +239,5 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
         SVProgressHUD.dismiss()
     }
-    
-    @objc func forgotPasswordPressed() {
-        print("forgotPasswordPresed")
-    }
-    
-    @objc func registerPressed() {
-        self.navigationItem.hidesBackButton = true
-        self.navigationController?.pushViewController(RegisterController(), animated: true)
-    }
-}
 
+}

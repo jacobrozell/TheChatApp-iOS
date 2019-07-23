@@ -19,6 +19,7 @@ class AppController: UIViewController {
         self.navigationItem.hidesBackButton = false
         self.title = "Messages"
         tableView.backgroundColor = .orange
+
         self.view.addSubview(tableView)
         setup()
     }

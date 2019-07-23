@@ -15,12 +15,14 @@ class ChatMessage {
     let toID: String
     let timeStamp: String
     var imageURL = ""
+    var chatPartner: String
     
-    init(id: String, message: String, fromID: String, toID: String, timeStamp: String) {
+    init(id: String, message: String, fromID: String, toID: String, timeStamp: String, chatPartner: String) {
         self.id = id
         self.message = message
         self.fromID = fromID
         self.toID = toID
         self.timeStamp = timeStamp
+        self.chatPartner = chatPartner
     }
 }

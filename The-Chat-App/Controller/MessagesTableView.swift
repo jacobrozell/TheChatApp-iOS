@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import Firebase
+import FirebaseDatabase
 
 class MessageCell: UITableViewCell {
     static let reuse = "MessageCell"
@@ -91,13 +93,15 @@ class MessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource
         self.register(MessageCell.self, forCellReuseIdentifier: MessageCell.reuse)
         self.delegate = self
         self.dataSource = self
-        
-        self.messages = MesssageParser().retrieveMessages()
-        // Find messages for user / might be better to do this in a controller to conform to low cohesion
+        self.setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup() {
+        retrieveMessages()
     }
     
     // MARK - TableView Delegate/Datasource
@@ -112,8 +116,9 @@ class MessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource
         let imageURL = index.imageURL
         let message = index.message
         let timestamp = index.timeStamp
+        let username = index.chatPartner
         
-        cell.setup(imageURL: imageURL, username: "jNelson", message: message, timestamp: timestamp)
+        cell.setup(imageURL: imageURL, username: username, message: message, timestamp: timestamp)
         cell.backgroundColor = .clear
         cell.layer.cornerRadius = 12.0
         cell.clipsToBounds = true
@@ -129,6 +134,47 @@ class MessagesTableView: UITableView, UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 125
+    }
+    
+    
+    // MARK - Get Data From Firebase
+    func retrieveMessages() {
+        
+        let userId = Auth.auth().currentUser!.uid
+        let messageDB = Database.database().reference().child("latest-messages").child(userId)
+        
+        messageDB.observe(.childAdded) { (snapshot) in
+            let snapshotValue = snapshot.value as! Dictionary<String, Any>
+            let chatPartnerUsername = self.getUsername(uid: snapshot.key)
+            let text = snapshotValue["text"]! as! String
+            let id = snapshotValue["id"]! as! String
+            let timestamp = snapshotValue["timestamp"]! as! Double
+            let toID = snapshotValue["toID"]! as! String
+            let fromID = snapshotValue["fromID"]! as! String
+            
+            self.messages.append(ChatMessage(id: id, message: text, fromID: fromID, toID: toID, timeStamp: self.formatTimeStamp(timestamp: timestamp), chatPartner: chatPartnerUsername))
+            self.reloadData()
+        }
+    }
+    
+    func formatTimeStamp(timestamp: Double) -> String {
+        let date = Date(timeIntervalSince1970: timestamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = DateFormatter.Style.medium
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeZone = .current
+        return dateFormatter.string(from: date)
+    }
+    
+    func getUsername(uid: String) -> String {
+        let database = Database.database().reference().child("users").child("uid")
+        var username: String = ""
+        
+        database.observe(.childAdded) { (snapshot) in
+            let snapshotValue = snapshot.value as! Dictionary<String, Any>
+            username = snapshotValue["username"]! as! String
+        }
+        return username
     }
 }
 
